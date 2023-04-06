@@ -1,0 +1,73 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="1" author="acheh">
+        <createTable schemaName="recipe_manager" tableName="recipes">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="instructions" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    
+    <changeSet id="2" author="acheh">
+        <createTable schemaName="recipe_manager" tableName="ingredients">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="3" author="acheh">
+        <createTable schemaName="recipe_manager" tableName="measures">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="4" author="acheh">
+        <createTable schemaName="recipe_manager" tableName="recipe_ingredients">
+            <column name="recipe_id" type="int">
+                <constraints nullable="false"
+                             foreignKeyName="fk_recipe_ingredient_recipes"
+                             referencedTableName="recipes"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="ingredient_id" type="int">
+                <constraints nullable="false"
+                             foreignKeyName="fk_recipe_ingredient_recipe_ingredients"
+                             referencedTableName="ingredients"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="measure_id" type="int">
+                <constraints nullable="false"
+                             foreignKeyName="fk_recipe_ingredient_measures"
+                             referencedTableName="measures"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="quantity" type="float">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    
+    <changeSet id="5" author="acheh">
+        <addPrimaryKey tableName="recipe_ingredients"
+                       columnNames="recipe_id, ingredient_id, measure_id"
+                       constraintName="pk_recipe_ingredients"/>
+    </changeSet>
+
+</databaseChangeLog>
