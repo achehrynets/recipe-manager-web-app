@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import java.util.Objects;
 
 @Entity
-public class Recipe {
+public class Ingredient {
 
     @Id
     @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
@@ -16,9 +16,6 @@ public class Recipe {
 
     @Column(name = "name")
     private String name;
-
-    @Column(name = "instructions")
-    private String instructions;
 
     public Integer getId() {
         return id;
@@ -36,25 +33,16 @@ public class Recipe {
         this.name = name;
     }
 
-    public String getInstructions() {
-        return instructions;
-    }
-
-    public void setInstructions(String instructions) {
-        this.instructions = instructions;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Recipe recipe = (Recipe) o;
-        return Objects.equals(id, recipe.id);
+        Ingredient that = (Ingredient) o;
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id);
     }
-
 }
