@@ -1,4 +1,4 @@
-package org.acheh.demo.recipe.manager.api;
+package com.acheh.demo.supercook.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

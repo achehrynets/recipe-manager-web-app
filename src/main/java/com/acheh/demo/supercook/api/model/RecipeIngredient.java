@@ -1,4 +1,4 @@
-package org.acheh.demo.recipe.manager.api.model;
+package com.acheh.demo.supercook.api.model;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;

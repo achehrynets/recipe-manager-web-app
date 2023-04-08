@@ -2,8 +2,8 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-    <changeSet id="1" author="acheh">
-        <createTable schemaName="recipe_manager" tableName="recipes">
+    <changeSet id="1 (createTable tableName=recipes)" author="acheh">
+        <createTable schemaName="supercook" tableName="recipes">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -16,8 +16,8 @@
         </createTable>
     </changeSet>
     
-    <changeSet id="2" author="acheh">
-        <createTable schemaName="recipe_manager" tableName="ingredients">
+    <changeSet id="2 (createTable tableName=ingredients)" author="acheh">
+        <createTable schemaName="supercook" tableName="ingredients">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -27,8 +27,8 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="3" author="acheh">
-        <createTable schemaName="recipe_manager" tableName="measures">
+    <changeSet id="3 (createTable tableName=measures)" author="acheh">
+        <createTable schemaName="supercook" tableName="measures">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -38,8 +38,8 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="4" author="acheh">
-        <createTable schemaName="recipe_manager" tableName="recipe_ingredients">
+    <changeSet id="4 3 (createTable tableName=recipe_ingredients)" author="acheh">
+        <createTable schemaName="supercook" tableName="recipe_ingredients">
             <column name="recipe_id" type="int">
                 <constraints nullable="false"
                              foreignKeyName="fk_recipe_ingredient_recipes"
@@ -64,10 +64,23 @@
         </createTable>
     </changeSet>
     
-    <changeSet id="5" author="acheh">
-        <addPrimaryKey tableName="recipe_ingredients"
+    <changeSet id="5 (addPrimaryKey constraintName=pk_recipe_measure_ingredient, tableName=recipe_ingredients)" author="acheh">
+        <addPrimaryKey schemaName="supercook"
+                       tableName="recipe_ingredients"
                        columnNames="recipe_id, ingredient_id, measure_id"
-                       constraintName="pk_recipe_ingredients"/>
+                       constraintName="pk_recipe_measure_ingredient"/>
+    </changeSet>
+
+    <changeSet id="6 (loadData tableName=measures)" author="acheh">
+        <loadData tableName="measures" file="data/measures-data.csv" relativeToChangelogFile="true">
+            <column name="name" type="varchar(255)"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="7 (loadData tableName=measures)" author="acheh">
+        <loadData tableName="ingredients" file="data/ingredients-data.csv" relativeToChangelogFile="true">
+            <column name="name" type="varchar(255)"/>
+        </loadData>
     </changeSet>
 
 </databaseChangeLog>
