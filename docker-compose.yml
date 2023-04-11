@@ -16,7 +16,7 @@ services:
   backend:
     depends_on:
       - database
-    image: "demo/recipe-manager-api:latest"
+    image: "demo/supercook-api:latest"
     restart: always
     ports:
       - "8080:8080"
