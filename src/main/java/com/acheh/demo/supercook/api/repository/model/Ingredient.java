@@ -1,12 +1,17 @@
-package com.acheh.demo.supercook.api.model;
+package com.acheh.demo.supercook.api.repository.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Objects;
 
+/**
+ * Entity class which represents a recipe ingredient.
+ */
 @Entity
+@Table(name = "ingredients")
 public class Ingredient {
 
     @Id
@@ -38,11 +43,12 @@ public class Ingredient {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Ingredient that = (Ingredient) o;
-        return Objects.equals(id, that.id);
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, name);
     }
+
 }

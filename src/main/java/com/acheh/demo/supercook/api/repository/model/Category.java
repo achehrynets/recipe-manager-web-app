@@ -1,13 +1,18 @@
-package com.acheh.demo.supercook.api.model;
+package com.acheh.demo.supercook.api.repository.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Objects;
 
+/**
+ * Entity class which represents a category.
+ */
 @Entity
-public class Measure {
+@Table(name = "categories")
+public class Category {
 
     @Id
     @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
@@ -37,13 +42,12 @@ public class Measure {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Measure measure = (Measure) o;
-        return Objects.equals(id, measure.id);
+        Category category = (Category) o;
+        return Objects.equals(id, category.id);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id);
     }
-
 }
