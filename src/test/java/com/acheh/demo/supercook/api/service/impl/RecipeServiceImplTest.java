@@ -46,8 +46,10 @@ class RecipeServiceImplTest {
 
         Instruction instruction1 = new Instruction();
         instruction1.setDescription("Instruction 1");
+        instruction1.setStep(1);
         Instruction instruction2 = new Instruction();
         instruction2.setDescription("Instruction 2");
+        instruction2.setStep(2);
         recipe.addInstruction(instruction1);
         recipe.addInstruction(instruction2);
 
