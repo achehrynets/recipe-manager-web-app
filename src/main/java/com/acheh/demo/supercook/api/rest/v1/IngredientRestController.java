@@ -44,8 +44,8 @@ public class IngredientRestController {
 
     @Operation(summary = "Find ingredients by search criteria")
     @GetMapping
-    public ResponseEntity<Page<IngredientDto>> find(@RequestParam(required = false) String search,
-                                                    @Parameter(description = OpenApiParamDescriptionConstants.SEARCH_PARAM_DESCRIPTION)
+    public ResponseEntity<Page<IngredientDto>> find(@Parameter(description = OpenApiParamDescriptionConstants.SEARCH_PARAM_DESCRIPTION)
+                                                    @RequestParam(required = false) String search,
                                                     Pageable pageable) {
         Page<Ingredient> categories = this.ingredientService.find(search, pageable);
         Page<IngredientDto> ingredientDto = categories.map(ingredient -> this.mapper.map(ingredient, IngredientDto.class));
