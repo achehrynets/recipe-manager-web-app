@@ -1,8 +1,11 @@
 package com.acheh.demo.supercook.api.rest.v1;
 
+import com.acheh.demo.supercook.api.constant.OpenApiParamDescriptionConstants;
 import com.acheh.demo.supercook.api.repository.model.Ingredient;
 import com.acheh.demo.supercook.api.rest.v1.dto.IngredientDto;
 import com.acheh.demo.supercook.api.service.IngredientService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +34,7 @@ public class IngredientRestController {
         this.ingredientService = ingredientService;
     }
 
+    @Operation(summary = "Find an ingredient by id")
     @GetMapping("/{id}")
     public ResponseEntity<IngredientDto> findById(@PathVariable("id") Integer id) {
         Ingredient ingredient = this.ingredientService.findById(id);
@@ -38,14 +42,17 @@ public class IngredientRestController {
         return ResponseEntity.ok(ingredientDto);
     }
 
+    @Operation(summary = "Find ingredients by search criteria")
     @GetMapping
     public ResponseEntity<Page<IngredientDto>> find(@RequestParam(required = false) String search,
-                                                  Pageable pageable) {
+                                                    @Parameter(description = OpenApiParamDescriptionConstants.SEARCH_PARAM_DESCRIPTION)
+                                                    Pageable pageable) {
         Page<Ingredient> categories = this.ingredientService.find(search, pageable);
         Page<IngredientDto> ingredientDto = categories.map(ingredient -> this.mapper.map(ingredient, IngredientDto.class));
         return ResponseEntity.ok(ingredientDto);
     }
 
+    @Operation(summary = "Create new ingredient")
     @PostMapping
     public ResponseEntity<IngredientDto> create(@RequestBody IngredientDto ingredientDto) {
         Ingredient ingredient = this.mapper.map(ingredientDto, Ingredient.class);
@@ -55,14 +62,16 @@ public class IngredientRestController {
                 .body(createdIngredientDto);
     }
 
+    @Operation(summary = "Update an ingredient")
     @PutMapping("/{id}")
     public ResponseEntity<IngredientDto> update(@PathVariable Integer id,
-                                              @RequestBody IngredientDto updateIngredientDto) {
+                                                @RequestBody IngredientDto updateIngredientDto) {
         Ingredient updateIngredient = this.mapper.map(updateIngredientDto, Ingredient.class);
         Ingredient updatedIngredient = this.ingredientService.update(id, updateIngredient);
         return ResponseEntity.ok(this.mapper.map(updatedIngredient, IngredientDto.class));
     }
 
+    @Operation(summary = "Delete an ingredient")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
         this.ingredientService.deleteById(id);

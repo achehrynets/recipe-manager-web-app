@@ -3,6 +3,7 @@ package com.acheh.demo.supercook.api.rest.v1;
 import com.acheh.demo.supercook.api.repository.model.Category;
 import com.acheh.demo.supercook.api.rest.v1.dto.CategoryDto;
 import com.acheh.demo.supercook.api.service.RecipeService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,6 +24,7 @@ public class RecipeCategoryRestController {
         this.recipeService = recipeService;
     }
 
+    @Operation(summary = "Add a recipe to category")
     @PostMapping("/{categoryId}")
     public ResponseEntity<CategoryDto> addCategory(@PathVariable Integer recipeId,
                                          @PathVariable Integer categoryId) {
@@ -31,6 +33,7 @@ public class RecipeCategoryRestController {
         return ResponseEntity.ok(categoryDto);
     }
 
+    @Operation(summary = "Remove a recipe from category")
     @DeleteMapping("/{categoryId}")
     public ResponseEntity<?> deleteCategory(@PathVariable Integer recipeId,
                                          @PathVariable Integer categoryId) {

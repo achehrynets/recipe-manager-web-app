@@ -1,8 +1,11 @@
 package com.acheh.demo.supercook.api.rest.v1;
 
+import com.acheh.demo.supercook.api.constant.OpenApiParamDescriptionConstants;
 import com.acheh.demo.supercook.api.repository.model.Instruction;
 import com.acheh.demo.supercook.api.rest.v1.dto.InstructionDto;
 import com.acheh.demo.supercook.api.service.InstructionService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,8 +33,10 @@ public class InstructionRestController {
         this.instructionService = instructionService;
     }
 
+    @Operation(summary = "Find instructions from a specific recipe")
     @GetMapping
     public ResponseEntity<Page<InstructionDto>> find(@PathVariable Integer recipeId,
+                                                     @Parameter(description = OpenApiParamDescriptionConstants.SEARCH_PARAM_DESCRIPTION)
                                                      @RequestParam(required = false) String search,
                                                      Pageable pageable) {
         Page<Instruction> instructions = this.instructionService.find(recipeId, search, pageable);
@@ -40,6 +45,7 @@ public class InstructionRestController {
         return ResponseEntity.ok(instructionDtos);
     }
 
+    @Operation(summary = "Add instructions to a specific recipe")
     @PostMapping
     public ResponseEntity<List<InstructionDto>> addInstructions(@PathVariable Integer recipeId,
                                                                 List<InstructionDto> instructionDtos) {
@@ -55,9 +61,10 @@ public class InstructionRestController {
         return ResponseEntity.ok(savedInstructionDtos);
     }
 
+    @Operation(summary = "Update instructions in a specific recipe")
     @PutMapping
     public ResponseEntity<List<InstructionDto>> updateInstructions(@PathVariable Integer recipeId,
-                                                                List<InstructionDto> instructionDtos) {
+                                                                   List<InstructionDto> instructionDtos) {
         List<Instruction> instructions = new ArrayList<>();
         for (InstructionDto instructionDto : instructionDtos) {
             instructions.add(this.mapper.map(instructionDto, Instruction.class));
@@ -69,6 +76,5 @@ public class InstructionRestController {
         }
         return ResponseEntity.ok(savedInstructionDtos);
     }
-
 
 }
