@@ -1,0 +1,33 @@
+version: "3.3"
+services:
+  database:
+    image: "mysql:5.7"
+    restart: always
+    ports:
+      - "3306:3306"
+    networks:
+      - shared
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_DATABASE: "supercook"
+      MYSQL_USER: "recipe_manager_admin"
+      MYSQL_PASSWORD: "password"
+
+  backend:
+    depends_on:
+      - database
+    image: "demo/recipe-manager-api:latest"
+    restart: always
+    ports:
+      - "8080:8080"
+    networks:
+      - shared
+    environment:
+      SPRING_PROFILES_ACTIVE: "production"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://database:3306/supercook"
+      SPRING_CONNECTION_USERNAME: "recipe_manager_admin"
+      SPRING_CONNECTION_PASSWORD: "password"
+
+networks:
+  shared:
+    driver: bridge
