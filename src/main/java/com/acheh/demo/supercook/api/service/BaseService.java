@@ -10,12 +10,38 @@ import org.springframework.data.domain.Pageable;
  */
 public interface BaseService<E, ID> {
 
-    E getById(ID id);
+    /**
+     * Find entity by id
+     * @param id entity identifier
+     * @return entity
+     */
+    E findById(ID id);
 
+    /**
+     * Save entity
+     * @param entity entity to save
+     * @return saved entity
+     */
     E save(E entity);
 
+    /**
+     * Update entity
+     * @param entity entity to update
+     * @return updated entity
+     */
+    E update(ID id, E entity);
+
+    /**
+     * Delete entity by id
+     * @param id entity identifier
+     */
     void deleteById(ID id);
 
+    /**
+     * Find all entities based on search criteria
+     * @param pageable pagination information
+     * @return page of entities
+     */
     Page<E> find(String search, Pageable pageable);
 
 }
