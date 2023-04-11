@@ -32,7 +32,7 @@ public class GenericSpecification<E> implements Specification<E> {
                 Deque<Object> parsedSearchCriteria = SearchCriteriaParser.parse(searchParams);
                 return specBuilder.build(parsedSearchCriteria, GenericSpecification::new);
             } catch (Exception exp) {
-                throw new BadRequestException(exp);
+                throw new BadRequestException("Invalid search criteria: " + searchParams);
             }
         }
         return Specification.where(null);
@@ -45,7 +45,7 @@ public class GenericSpecification<E> implements Specification<E> {
                 Deque<Object> parsedSearchCriteria = SearchCriteriaParser.parse(searchParams);
                 return specBuilder.build(parsedSearchCriteria, function);
             } catch (Exception exp) {
-                throw new BadRequestException(exp);
+                throw new BadRequestException("Invalid search criteria: " + searchParams);
             }
         }
         return Specification.where(null);
@@ -57,7 +57,7 @@ public class GenericSpecification<E> implements Specification<E> {
         try {
             predicate = buildPredicate(getPath(root, this.criteria.getKey()), cb);
         } catch (Exception exp) {
-            throw new BadRequestException(exp);
+            throw new BadRequestException("Invalid search criteria: " + this.criteria.getKey() + " " + this.criteria.getOperation() + " " + this.criteria.getValue());
         }
         return this.criteria.isNegation() ? cb.not(predicate) : predicate;
     }
