@@ -168,4 +168,16 @@
         </loadData>
     </changeSet>
 
+    <changeSet id="14 (addUniqueConstraint constraintName=uk_category_name)" author="acheh">
+        <addUniqueConstraint tableName="categories"
+                             columnNames="name"
+                             constraintName="uk_category_name"/>
+    </changeSet>
+
+    <changeSet id="15 (addUniqueConstraint constraintName=uk_ingredients_name)" author="acheh">
+        <addUniqueConstraint tableName="ingredients"
+                             columnNames="name"
+                             constraintName="uk_ingredients_name"/>
+    </changeSet>
+
 </databaseChangeLog>
