@@ -2,7 +2,6 @@ package com.acheh.demo.supercook.api.repository.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -29,7 +28,7 @@ public class Instruction {
     @Column(name = "fk_recipe_id", insertable = false, updatable = false)
     private Integer recipeId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "fk_recipe_id", nullable = false)
     private Recipe recipe;
 

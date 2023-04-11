@@ -44,10 +44,10 @@ public class Recipe {
     )
     private Set<Category> categories = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     private Set<Instruction> instructions = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     private Set<RecipeIngredient> ingredients = new LinkedHashSet<>();
 
     public Integer getId() {
@@ -86,8 +86,12 @@ public class Recipe {
         return Collections.unmodifiableSet(categories);
     }
 
-    public void addCategory(Category category) {
-        this.categories.add(category);
+    public boolean addCategory(Category category) {
+        return this.categories.add(category);
+    }
+
+    public boolean removeCategory(Category category) {
+        return this.categories.remove(category);
     }
 
     public Set<Instruction> getInstructions() {
@@ -107,6 +111,10 @@ public class Recipe {
         this.ingredients.add(ingredient);
         ingredient.setRecipe(this);
         ingredient.setRecipeId(this.id);
+    }
+
+    public void removeIngredient(RecipeIngredient ingredient) {
+        this.ingredients.remove(ingredient);
     }
 
     public void setCategories(Set<Category> categories) {
