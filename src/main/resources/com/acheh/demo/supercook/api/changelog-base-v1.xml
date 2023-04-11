@@ -2,21 +2,84 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-    <changeSet id="1 (createTable tableName=recipes)" author="acheh">
-        <createTable schemaName="supercook" tableName="recipes">
+    <changeSet id="1 (createTable tableName=categories)" author="acheh">
+        <createTable schemaName="supercook" tableName="categories">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="instructions" type="varchar(255)">
+        </createTable>
+        <modifySql dbms="mysql">
+            <append value="ENGINE=INNODB CHARSET=UTF8 COLLATE utf8_unicode_ci"/>
+        </modifySql>
+    </changeSet>
+
+    <changeSet id="2 (createTable tableName=recipes)" author="acheh">
+        <createTable schemaName="supercook" tableName="recipes">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="title" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="servings" type="int">
                 <constraints nullable="false"/>
             </column>
         </createTable>
+        <modifySql dbms="mysql">
+            <append value="ENGINE=INNODB CHARSET=UTF8 COLLATE utf8_unicode_ci"/>
+        </modifySql>
+    </changeSet>
+
+    <changeSet id="3 (createTable tableName=recipe_categories)" author="acheh">
+        <createTable schemaName="supercook" tableName="recipe_categories">
+            <column name="fk_recipe_id" type="int">
+                <constraints nullable="false"
+                             foreignKeyName="fk_recipe_categories_recipes"
+                             referencedTableName="recipes"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="fk_category_id" type="int">
+                <constraints nullable="false"
+                             foreignKeyName="fk_recipe_categories_categories"
+                             referencedTableName="categories"
+                             referencedColumnNames="id"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="recipe_categories"
+                       columnNames="fk_recipe_id, fk_category_id"
+                       constraintName="uk_recipe_categories"/>
+    </changeSet>
+
+    <changeSet id="4 (createTable tableName=instructions)" author="acheh">
+        <createTable schemaName="supercook" tableName="instructions">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="fk_recipe_id" type="int">
+                <constraints nullable="false"
+                             foreignKeyName="fk_instruction_recipes"
+                             referencedTableName="recipes"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="description" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="step" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <modifySql dbms="mysql">
+            <append value="ENGINE=INNODB CHARSET=UTF8 COLLATE utf8_unicode_ci"/>
+        </modifySql>
     </changeSet>
     
-    <changeSet id="2 (createTable tableName=ingredients)" author="acheh">
+    <changeSet id="5 (createTable tableName=ingredients)" author="acheh">
         <createTable schemaName="supercook" tableName="ingredients">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -25,61 +88,83 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+        <modifySql dbms="mysql">
+            <append value="ENGINE=INNODB CHARSET=UTF8 COLLATE utf8_unicode_ci"/>
+        </modifySql>
     </changeSet>
 
-    <changeSet id="3 (createTable tableName=measures)" author="acheh">
-        <createTable schemaName="supercook" tableName="measures">
+    <changeSet id="6 (createTable tableName=recipe_ingredients)" author="acheh">
+        <createTable schemaName="supercook" tableName="recipe_ingredients">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="name" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
-
-    <changeSet id="4 3 (createTable tableName=recipe_ingredients)" author="acheh">
-        <createTable schemaName="supercook" tableName="recipe_ingredients">
-            <column name="recipe_id" type="int">
+            <column name="fk_recipe_id" type="int">
                 <constraints nullable="false"
-                             foreignKeyName="fk_recipe_ingredient_recipes"
+                             foreignKeyName="fk_recipe_ingredients_recipes"
                              referencedTableName="recipes"
                              referencedColumnNames="id"/>
             </column>
-            <column name="ingredient_id" type="int">
+            <column name="fk_ingredient_id" type="int">
                 <constraints nullable="false"
-                             foreignKeyName="fk_recipe_ingredient_recipe_ingredients"
+                             foreignKeyName="fk_recipe_ingredients_ingredients"
                              referencedTableName="ingredients"
                              referencedColumnNames="id"/>
             </column>
-            <column name="measure_id" type="int">
-                <constraints nullable="false"
-                             foreignKeyName="fk_recipe_ingredient_measures"
-                             referencedTableName="measures"
-                             referencedColumnNames="id"/>
-            </column>
-            <column name="quantity" type="float">
+            <column name="measurement" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
+        <modifySql dbms="mysql">
+            <append value="ENGINE=INNODB CHARSET=UTF8 COLLATE utf8_unicode_ci"/>
+        </modifySql>
     </changeSet>
     
-    <changeSet id="5 (addPrimaryKey constraintName=pk_recipe_measure_ingredient, tableName=recipe_ingredients)" author="acheh">
-        <addPrimaryKey schemaName="supercook"
-                       tableName="recipe_ingredients"
-                       columnNames="recipe_id, ingredient_id, measure_id"
-                       constraintName="pk_recipe_measure_ingredient"/>
+    <changeSet id="7 (addUniqueConstraint constraintName=uk_recipe_ingredients)" author="acheh">
+        <addUniqueConstraint tableName="recipe_ingredients"
+                       columnNames="fk_recipe_id, fk_ingredient_id"
+                       constraintName="uk_recipe_ingredients"/>
     </changeSet>
 
-    <changeSet id="6 (loadData tableName=measures)" author="acheh">
-        <loadData tableName="measures" file="data/measures-data.csv" relativeToChangelogFile="true">
-            <column name="name" type="varchar(255)"/>
+    <changeSet id="8 (loadData tableName=categories)" author="acheh">
+        <loadData schemaName="supercook" tableName="categories" file="data/categories-data.csv" relativeToChangelogFile="true">
+            <column name="name" header="name" type="varchar(255)"/>
         </loadData>
     </changeSet>
 
-    <changeSet id="7 (loadData tableName=measures)" author="acheh">
-        <loadData tableName="ingredients" file="data/ingredients-data.csv" relativeToChangelogFile="true">
-            <column name="name" type="varchar(255)"/>
+    <changeSet id="9 (loadData tableName=recipes)" author="acheh">
+        <loadData schemaName="supercook" tableName="recipes" file="data/recipes-data.csv" separator="|" relativeToChangelogFile="true">
+            <column name="title" header="title" type="varchar(255)"/>
+            <column name="description" header="description" type="text"/>
+            <column name="servings" header="description" type="int"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="10 (loadData tableName=recipe_categories)" author="acheh">
+        <loadData schemaName="supercook" tableName="recipe_categories" file="data/recipe-categories-data.csv" relativeToChangelogFile="true">
+            <column name="fk_recipe_id" header="fk_recipe_id" type="int"/>
+            <column name="fk_category_id" header="fk_category_id" type="int"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="11 (loadData tableName=ingredients)" author="acheh">
+        <loadData schemaName="supercook" tableName="ingredients" file="data/ingredients-data.csv" relativeToChangelogFile="true">
+            <column name="name" header="name" type="varchar(255)"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="12 (loadData tableName=instructions)" author="acheh">
+        <loadData schemaName="supercook" tableName="instructions" file="data/instructions-data.csv" separator="|" relativeToChangelogFile="true">
+            <column name="fk_recipe_id" header="recipe_id" type="int"/>
+            <column name="description" header="description" type="varchar(255)"/>
+            <column name="step" header="step" type="int"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="13 (loadData tableName=recipe_ingredients)" author="acheh">
+        <loadData schemaName="supercook" tableName="recipe_ingredients" file="data/recipe-ingredients-data.csv" separator="|" relativeToChangelogFile="true">
+            <column name="fk_recipe_id" header="fk_recipe_id" type="int"/>
+            <column name="fk_ingredient_id" header="fk_ingredient_id" type="int"/>
+            <column name="measurement" header="measurement" type="varchar(50)"/>
         </loadData>
     </changeSet>
 
