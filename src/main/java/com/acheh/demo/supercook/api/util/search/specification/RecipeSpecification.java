@@ -106,10 +106,10 @@ public final class RecipeSpecification {
     private static Subquery<Integer> createSubqueryForIngredients(Root<Recipe> root, CriteriaQuery<?> query, CriteriaBuilder cb, List<Integer> ingredients) {
         Subquery<Integer> subquery = query.subquery(Integer.class);
         Root<RecipeIngredient> subRoot = subquery.from(RecipeIngredient.class);
-        subquery.select(subRoot.get("id").get("recipeId"));
+        subquery.select(subRoot.get("id"));
         return subquery.where(cb.and(
-                cb.equal(root.get("id"), subRoot.get("id").get("recipeId")),
-                subRoot.get("id").get("ingredientId").in(ingredients)
+                cb.equal(root.get("id"), subRoot.get("recipeId")),
+                subRoot.get("ingredientId").in(ingredients)
         ));
     }
 
