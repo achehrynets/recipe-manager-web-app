@@ -180,4 +180,57 @@
                              constraintName="uk_ingredients_name"/>
     </changeSet>
 
+    <changeSet id="15 (createTable tableName=roles)" author="acheh">
+        <createTable tableName="roles">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <modifySql dbms="mysql">
+            <append value="ENGINE=INNODB CHARSET=UTF8 COLLATE utf8_unicode_ci"/>
+        </modifySql>
+    </changeSet>
+
+    <changeSet id="16 (createTable tableName=users)" author="acheh">
+        <createTable tableName="users">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="fk_role_id" type="int">
+                <constraints nullable="false"
+                             foreignKeyName="fk_users_roles"
+                             referencedTableName="roles"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="username" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <modifySql dbms="mysql">
+            <append value="ENGINE=INNODB CHARSET=UTF8 COLLATE utf8_unicode_ci"/>
+        </modifySql>
+    </changeSet>
+
+    <changeSet id="17 (loadData tableName=roles)" author="acheh">
+        <loadData schemaName="supercook" tableName="roles" file="data/roles-data.csv"  relativeToChangelogFile="true">
+            <column name="name" header="name" type="varchar(255)"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="18 (loadData tableName=users)" author="acheh">
+        <loadData schemaName="supercook" tableName="users" file="data/users-data.csv" separator="|" relativeToChangelogFile="true"/>
+    </changeSet>
+
 </databaseChangeLog>
