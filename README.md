@@ -1,17 +1,17 @@
-# Suppercook
+# Supercook
 
-Suppercook is a powerful RESTful web service that allows you to manage your recipes with ease. Built on Java 11 and Spring Boot 2.7, this app provides a robust and reliable platform for users to create, update, and remove recipes programmatically.
+Supercook is a powerful RESTful web service that allows you to manage your recipes with ease. Built on Java 11 and Spring Boot 2.7, this app provides a robust and reliable platform for users to create, update, and remove recipes programmatically.
 
-With Suppercook, you can leverage a rich set of RESTful endpoints to add, modify, and delete recipes in your own applications. The app also provides a comprehensive set of query parameters to enable powerful search and filtering capabilities, making it easy to find the recipe you need, no matter how complex your requirements are.
+With Supercook, you can leverage a rich set of RESTful endpoints to add, modify, and delete recipes in your own applications. The app also provides a comprehensive set of query parameters to enable powerful search and filtering capabilities, making it easy to find the recipe you need, no matter how complex your requirements are.
 
-Suppercook's modular architecture and well-defined APIs make it easy to integrate with your existing technology stack. Whether you're building a mobile app, a web application, or an IoT device, Suppercook provides the flexibility and scalability you need to deliver high-quality culinary experiences to your users.
+Supercook's modular architecture and well-defined APIs make it easy to integrate with your existing technology stack. Whether you're building a mobile app, a web application, or an IoT device, Supercook provides the flexibility and scalability you need to deliver high-quality culinary experiences to your users.
 
 # Prerequisite
 
 1. Java 11
 2. Maven 3.8.6 or higher
-3. (Optional) MySQL database is required to run production profile, but if you can you H2 database  
-5. (Optional) Bash and Docker
+3. (Optional) MySQL database is required to run production profile, but if you don't have MySQL then you can use H2 database  
+4(Optional) Bash and Docker
 
 # How to run the app?
 There are 2 ways how to run this application. 
