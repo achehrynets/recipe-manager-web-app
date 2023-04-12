@@ -43,7 +43,7 @@ public class RecipeRestController {
 
     @Operation(summary = "Find all recipes based on search criteria")
     @GetMapping
-    public ResponseEntity<Page<SimpleRecipeDto>> find(@RequestBody(required = false) RecipeFilterDto filter,
+    public ResponseEntity<Page<SimpleRecipeDto>> find(RecipeFilterDto filter,
                                                       Pageable pageable) {
         Page<Recipe> recipes = this.recipeService.find(filter, pageable);
         Page<SimpleRecipeDto> recipeDtos = recipes.map(recipe -> this.mapper.map(recipe, SimpleRecipeDto.class));
