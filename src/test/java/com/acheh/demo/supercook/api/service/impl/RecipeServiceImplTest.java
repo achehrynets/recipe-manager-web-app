@@ -21,7 +21,6 @@ import javax.transaction.Transactional;
 @SpringBootTest
 class RecipeServiceImplTest {
 
-
     @Autowired
     private RecipeService recipeService;
 
