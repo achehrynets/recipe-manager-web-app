@@ -85,10 +85,10 @@ public final class RecipeSpecification {
         return (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (includeIngredients != null && !includeIngredients.isEmpty()) {
-                predicates.add(cb.exists(createSubqueryForIngredients(root, query, cb, includeIngredients)));
+                predicates.add(root.in(createSubqueryForIngredients(query, cb, includeIngredients, true)));
             }
             if (excludeIngredients != null && !excludeIngredients.isEmpty()) {
-                predicates.add(cb.not(cb.exists(createSubqueryForIngredients(root, query, cb, excludeIngredients))));
+                predicates.add(cb.not(root.in(createSubqueryForIngredients(query, cb, excludeIngredients, false))));
             }
             return query.where(predicates.toArray(new Predicate[0])).getRestriction();
         };
@@ -97,20 +97,21 @@ public final class RecipeSpecification {
     /**
      * Create a subquery to find recipes that contain all the given ingredients.
      *
-     * @param root the root of the query
      * @param query the query
      * @param cb the criteria builder
      * @param ingredients the ingredients to search for
      * @return the subquery
      */
-    private static Subquery<Integer> createSubqueryForIngredients(Root<Recipe> root, CriteriaQuery<?> query, CriteriaBuilder cb, List<Integer> ingredients) {
+    private static Subquery<Integer> createSubqueryForIngredients(CriteriaQuery<?> query,
+                                                                  CriteriaBuilder cb, List<Integer> ingredients,
+                                                                  boolean include) {
+        long ingredientsSize = include ? Long.valueOf(ingredients.size()) : 1L;
         Subquery<Integer> subquery = query.subquery(Integer.class);
         Root<RecipeIngredient> subRoot = subquery.from(RecipeIngredient.class);
-        subquery.select(subRoot.get("id"));
-        return subquery.where(cb.and(
-                cb.equal(root.get("id"), subRoot.get("recipeId")),
-                subRoot.get("ingredientId").in(ingredients)
-        ));
+        return subquery.select(subRoot.get("recipeId"))
+                .where(subRoot.get("ingredientId").in(ingredients))
+                .groupBy(subRoot.get("recipeId"))
+                .having(cb.greaterThanOrEqualTo(cb.count(subRoot.get("recipeId")), ingredientsSize));
     }
 
 
